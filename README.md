@@ -11,6 +11,6 @@ It almost seems possible to automate this without any machine learning, by using
 A careful human observer will look at the smaller straight edges, indicated with black lines, to make the crystal-axis determination. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
 
 
-###Usage
+### Usage
 
-###Results
+### Results
