@@ -7,7 +7,7 @@ It is common practice in many research labs to use straight edges to estimate th
 
 At first it seems fairly doable to automate this without machine learning, by using edge detectors to identify edges and then, for example, create a histogram of their angles and fitting the peaks. However, there is intuition that goes into picking the "straight edges," and there are difficult cases. Here is an example where there is a long and fairly straight edge, that is actually slightly curved:
 
-A careful human observer will look at the smaller straight edges, indicated with black lines, to make the crystal-axis determination. There are other factors that make manual automation difficult, such as inconsistent illumination, different color/brightness of the crystals, and the appearance of features in the images like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
+A careful human observer will look at the smaller straight edges, indicated with black lines, to make the crystal-axis determination. There are other factors that make manual automation difficult, such as inconsistent illumination, different color/brightness of the crystals, and anomalous features like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
 
 ### Usage
 
