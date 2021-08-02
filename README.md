@@ -13,7 +13,7 @@ A human observer will be able to pick the straighter edges (shown in black) and 
 
 
 ### Requirements
-NumPy 1.18, Python 3.7, Matplotlib 3.1
+NumPy, Python, Matplotlib, PyTorch
 
 ### Usage
 
