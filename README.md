@@ -5,7 +5,7 @@ One of the most striking features of crystals is the tendency to cleave along sp
 <img src="figures/bn_with_lattice_crop.png" width=900>
 </p>
   
-*Overlay of the boron nitride crystal structure on a microscope image of a 2D boron nitride crystal. The crystal tends to cleave along high-symmetry directions of the crystal lattice, which occur every 30 degrees.*
+*Microscope image of a 2D boron nitride crystal with the crystal structure overlaid. The crystal tends to cleave along high-symmetry directions of the crystal lattice, which occur every 30 degrees.*
 
 It is common in research labs to use straight edges to estimate the crystallographic oritentation of a 2D crystal. Empirically, the accuracy of this technique is about 1 degree; experiments have come to require much higher (0.1 degree) angular precision so other methods are preferred. Nevertheless, I was curious to see if this technique can be automated. 
 
