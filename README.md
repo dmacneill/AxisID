@@ -17,7 +17,7 @@ It is tempting to automate this without machine learning, by using edge detector
 
 *Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30 degrees). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystallographic orientation is about 16.1 degrees.*
 
-A human observer will be able to pick the straighter edges (shown in black) and correctly determine the axis orientation. There are other factors that make automation difficult, such as inconsistent illumination, inconsistent contrast, and anomalous features like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
+A human will be able to pick the straighter edges (shown in black) and correctly determine the crystallographic orientation. There are other factors that make automation difficult, such as inconsistent illumination, inconsistent contrast, and anomalous features like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
 
 ### Requirements
 Python 3.8.10, Pillow 7.2.0, NumPy 1.19.1, Matplotlib 3.3.4, PyTorch 1.8.1
