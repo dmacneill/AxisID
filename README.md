@@ -46,7 +46,11 @@ One final comment is that the predicted and ground-truth angles are only compare
 
 ### Results
 
-To train the model I first labelled the crystal orientation for 2681 boron nitride flakes using a [custom GUI labeling tool](https://github.com/dmacneill/axis-annotation-tool). I randomly chose 672 images to be used as the test set. From the remaining 2009 images, I generated 18,691 TIFF images by cropping each image into a square using different windows, then resizing the square to 256X256 pixels.
+To train the model I first determined the crystallographic orientation for 2681 boron nitride flakes using a [custom GUI labeling tool](https://github.com/dmacneill/axis-annotation-tool). I randomly chose 672 images to be used as the test set. From the remaining 2009 images, I generated 18,691 256X256 pixel TIFF images by cropping each image into a square mutliple times with different cropping windows and resizing the squares to 256X256 pixels.
+
+I then chose 5 small CNN architectures somewhat randomly to get a feel for their performance, the architectures are:
+
+
 
 ### References
 
