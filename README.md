@@ -48,8 +48,6 @@ One final comment is that the predicted and ground-truth angles are only compare
 
 To train the model I first labelled the crystal orientation for 2681 boron nitride flakes using a [custom GUI labeling tool](https://github.com/dmacneill/axis-annotation-tool). I randomly chose 672 images to be used as the test set. From the remaining 2009 images, I generated 18,691 TIFF images by cropping each image into a square using different windows, then resizing the square to 256X256 pixels.
 
-### Future Work
-
 ### References
 
 <a id="1">[1]</a> Y. Gao *et al.,* "Distinctive in-Plane Cleavage Behaviors of Two-Dimensional Layered Materials", *ACS Nano*, 10(9):8980-8 (2016)
