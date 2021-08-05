@@ -28,11 +28,13 @@ This repository contains code necessary to train CNNs on the axis orientation ta
 
 ```
 python train.py --cuda --image_dir images --angles_path angles.csv
-```.
+```
 
 where ```image_dir``` is the path to the training images, assumed to be JPEG of TIFF images. The ```angles_path``` is the path to a file containing rows of labels in the format ```basename, axis_angle, count```. This format allows pre-computed data augmentation with the following convention: for each ```basename``` there should be ```count``` images in the ```image_dir``` with names ```basename-n.jpg``` or ```basename-n.tif```, where ```n``` ranges from 0 to ```count-1```. To see the full list of arguments, call ```python train.py -h```. Arguments can be passed via file using 
 
-```python train.py @arguments_file.txt```.
+```
+python train.py @arguments_file.txt
+```
 
 The model is defined in ```module.py``` (model architechtures are discussed in the next section). The module ```test_model.py``` allows easy testing on the test set, or re-evaluation on the training set. It is called as:
 
