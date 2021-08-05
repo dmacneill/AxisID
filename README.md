@@ -15,7 +15,7 @@ It is tempting to automate this without machine learning, by using edge detector
 <img src="figures/hard_example.png" width=900>
 </p>
 
-*Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystal axis orientation is about 16.1 degrees.*
+*Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30 degrees). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystal axis orientation is about 16.1 degrees.*
 
 A human observer will be able to pick the straighter edges (shown in black) and correctly determine the axis orientation. There are other factors that make automation difficult, such as inconsistent illumination, inconsistent contrast, and anomalous features like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
 
@@ -42,11 +42,11 @@ For each image in `image_dir` with filename image.tif or image.jpg there should 
 
 The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params` (if none are passed no scheduler is used). The model architechture is discussed in the next section.
 
-One final comment is that the model prediction and ground-truth angle value are considered to be equal by the loss function in `train.py` if they are equal moduluo 30. This is because - for hexagonal boron nitride and graphene - the crystal axis orientation can only be determined moduluo 30 using optical microscopy. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
+One final comment is that the predicted and ground-truth angles are only compared moduluo 30 degrees in the loss function. This is because - for hexagonal boron nitride and graphene - the crystal axis orientation can only be determined moduluo 30 degrees using optical microscopy. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
 ### Results
 
-To train the model I first labelled the crystal axis for 2681 boron nitride flakes using a [custom GUI labeling tool](https://github.com/dmacneill/axis-annotation-tool). I randomly chose 672 images to be used as the test set. From the remaining 2009 images, I generated 18,691 TIFF images by cropping each image into a square using different windows, then resizing the square to 256X256 pixels.
+To train the model I first labelled the crystal orientation for 2681 boron nitride flakes using a [custom GUI labeling tool](https://github.com/dmacneill/axis-annotation-tool). I randomly chose 672 images to be used as the test set. From the remaining 2009 images, I generated 18,691 TIFF images by cropping each image into a square using different windows, then resizing the square to 256X256 pixels.
 
 ### Future Work
 
