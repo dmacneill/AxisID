@@ -24,7 +24,7 @@ Python 3.8.10, Pillow 7.2.0, NumPy 1.19.1, Matplotlib 3.3.4, PyTorch 1.8.1
 
 ### Usage
 
-This repository contains code necessary to train CNNs on the axis orientation task. The main module is ```train.py``` which can be run as:
+This repository contains code necessary to train CNNs on the axis orientation task. The main script is ```train.py``` which can be run as:
 
 ```
 python train.py --cuda --image_dir images --angles_path angles.csv
