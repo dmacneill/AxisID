@@ -40,9 +40,13 @@ python test_model.py --image_dir images --annotation_dir annotations --weights_p
 
 For each image in `image_dir` with filename image.tif or image.jpg there should be a corresponding file in `annotation_dir` with filename image-edges.csv. The ground-truth angle should be the only float in the first line of image-edges.csv. 
 
-The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`. The model architechture is discussed in the next section.
+The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params` (if none are passed no scheduler is used). The model architechture is discussed in the next section.
+
+One final comment is that the model prediction and ground-truth angle value are considered to be equal by the loss function in `train.py` if they are equal moduluo 30. This is because - for hexagonal boron nitride and graphene - the crystal axis orientation can only be determined moduluo 30 using optical microscopy. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
 ### Results
+
+To train the model I first labelled the crystal axis for 2681 boron nitride flakes using a [custom GUI labeling tool](https://github.com/dmacneill/axis-annotation-tool). I randomly chose 672 images to be used as the test set. From the remaining 2009 images, I generated 18,691 TIFF images by cropping each image into a square using different windows, then resizing the square to 256X256 pixels.
 
 ### Future Work
 
