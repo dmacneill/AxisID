@@ -38,7 +38,7 @@ The other script is ```test_model.py``` which allows easy testing on the test se
 python test_model.py --image_dir images --annotation_dir annotations --weights_path path_to_model
 ```
 
-For each image in `image_dir` with filename image.tif or image.jpg there should be a corresponding file in `annotation_dir` with filename image-edges.csv. The ground-truth angle should be the only float in the first line of image-edges.csv. 
+For each image in `image_dir` with filename *image*.tif or *image*.jpg there should be a corresponding file in `annotation_dir` with filename *image*-edges.csv. The first line of *image*-edges.csv should contain the ground-truth crystallographic orientation for the image. 
 
 The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params` (if none are passed no scheduler is used). The model architechture is discussed in the next section.
 
