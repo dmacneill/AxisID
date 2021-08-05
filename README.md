@@ -48,4 +48,4 @@ The other two important modules are `model.py`, which defines the model, and `sc
 
 ### References
 
-<a id="1">[1]</a> 
+<a id="1">[1]</a> Y. Gao *et al.,* "Distinctive in-Plane Cleavage Behaviors of Two-Dimensional Layered Materials", *ACS Nano* **10** (2016)
