@@ -32,12 +32,15 @@ python train.py --cuda --image_dir images --angles_path angles.csv
 
 where `image_dir` is the path to the training images, assumed to be JPEG or TIFF images. `angles_path` is the path to a file containing rows of labels in the format: *basename, axis_angle, count*. This format allows pre-computed data augmentation with the following convention: for each basename there should be *count* images in `image_dir` with names basename-*n*.jpg or basename-*n*.tif, where *n* ranges from 0 to *count*-1. To see the full list of arguments, call `python train.py -h`. Arguments can be passed via file using `python train.py @arguments_file.txt`.
 
-The model is defined in ```module.py``` (model architechtures are discussed in the next section). The module ```test_model.py``` allows easy testing on the test set, or re-evaluation on the training set. It is called as:
+The other script is ```test_model.py``` which allows easy testing on the test set, or re-evaluation on the training set. It is called as:
 
 ```
 python test_model.py --image_dir images --annotation_dir annotations --weights_path path_to_model
 ```
+
 For each image in `image_dir` with filename image.tif or image.jpg there should be a corresponding file in `annotation_dir` with filename image-edges.csv. The ground-truth angle should be the only float in the first line of image-edges.csv. 
+
+The other two important modules are `model.py`, which defines the model, and `scheduler.py`. `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (essentially the same as [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`. The model architechture is discussed in the next section.
 
 ### Results
 
