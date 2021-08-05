@@ -19,11 +19,22 @@ It is tempting to try to automate this without machine learning, by using edge d
 
 A human observer will be able to pick the straighter edges (shown in black) and correctly determine the axis orientation. There are other factors that make automation difficult, such as inconsistent illumination, inconsistent contrast, and anomalous features like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
 
-
 ### Requirements
-NumPy, Python, Matplotlib, PyTorch
+Python 3.8.10, Pillow 7.2.0, NumPy 1.19.1, Matplotlib 3.3.4, PyTorch 1.8.1
 
 ### Usage
+
+This repository contains code necessary to train CNNs on the axis orientation task. The main module is ```train.py``` which can be run as:
+
+```
+python train.py --cuda --image_dir images --angles_path angles.csv
+```
+
+where ```image_dir``` is the path to the training images, assumed to be JPEG of TIFF images. The ```angles_path``` is the path to a file containing rows of labels in the format:
+
+```basename, axis_angle, count```
+
+This format allows pre-computed data augmentation with the following convention: for each ```basename``` there should be ```count``` images in the ```image_dir``` with names ```basename-n.jpg``` or ```basename-n.tif```, where ```n``` ranges from 0 to ```count-1```.
 
 ### Results
 
