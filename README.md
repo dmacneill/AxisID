@@ -42,7 +42,7 @@ For each image in `image_dir` with filename *image*.tif or *image*.jpg there sho
 
 The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params` (if none are passed no scheduler is used).
 
-One final comment is that the predicted and ground-truth angles are only compared moduluo 30 degrees in the loss function. This is because for hexagonal boron nitride and graphene the crystal axis orientation can only be determined moduluo 30 degrees from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
+One final comment is that the predicted and ground-truth angles are only compared moduluo 30 degrees in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30 degrees from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
 ### Results
 
