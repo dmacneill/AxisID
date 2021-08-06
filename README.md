@@ -51,7 +51,7 @@ To train the model I first determined the crystallographic orientation for 2681 
 I then chose 5 small CNN architectures somewhat randomly to get a feel for their performance, the architectures are:
 
 <p align ="center">
-<img src="figures/architectures.svg" width=900>
+<img src="figures/architectures.svg" width=800>
 </p>
 
 ### References
