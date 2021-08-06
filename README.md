@@ -13,7 +13,7 @@ It is tempting to automate this without machine learning, by using edge detector
 
 <p float = "left">
 <img src="figures/hard_example_BN.png" width=500>
-<img src="figures/hard_example_hist.svg" width=500>
+<img src="figures/hard_example_hist.svg" width=400>
 </p>
 
 *Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30 degrees). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystallographic orientation is about 16.1 degrees.*
