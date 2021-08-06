@@ -11,7 +11,7 @@ It is common in research labs to use straight edges to estimate the crystallogra
 
 It is tempting to automate this without machine learning, by using edge detectors to identify edges and then fitting the peaks in a histogram of edge angles. However, it takes intuition to pick the "straight edges," and there are difficult cases. Here is an example where there are some fairly straight edges that aren't aligned with the crystal axes:
 
-<p float = "left">
+<p float = "center">
 <img src="figures/hard_example.svg" width=900>
 </p>
 
