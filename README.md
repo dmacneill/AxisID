@@ -1,7 +1,7 @@
 # AxisID
 One of the most striking features of crystals is the tendency to cleave along specific directions with respect to the underlying atomic lattice. This is not just true for typical 3D crystals, but also 2D crystals currently studied in physics research [[1]](#1):
 
-<p align ="center">
+<p align = "center">
 <img src="figures/bn_with_lattice_crop.png" width=900>
 </p>
   
@@ -11,7 +11,7 @@ It is common in research labs to use straight edges to estimate the crystallogra
 
 It is tempting to automate this without machine learning, by using edge detectors to identify edges and then fitting the peaks in a histogram of edge angles. However, it takes intuition to pick the "straight edges," and there are difficult cases. Here is an example where there are some fairly straight edges that aren't aligned with the crystal axes:
 
-<p float = "center">
+<p align = "center">
 <img src="figures/hard_example.svg" width=900>
 </p>
 
