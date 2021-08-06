@@ -12,8 +12,7 @@ It is common in research labs to use straight edges to estimate the crystallogra
 It is tempting to automate this without machine learning, by using edge detectors to identify edges and then fitting the peaks in a histogram of edge angles. However, it takes intuition to pick the "straight edges," and there are difficult cases. Here is an example where there are some fairly straight edges that aren't aligned with the crystal axes:
 
 <p float = "left">
-<img src="figures/hard_example_BN.png" width=500>
-<img src="figures/hard_example_hist.svg" width=450>
+<img src="figures/hard_example.svg" width=900>
 </p>
 
 *Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30 degrees). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystallographic orientation is about 16.1 degrees.*
