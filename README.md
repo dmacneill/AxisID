@@ -72,7 +72,7 @@ Note that the maximum error is 15 degrees, and the RMS error from a random polic
 <img src="figures/test_set_errors.svg" width=800>
 </p>
 
-The outlier bin in the baseline errors comes from a single mislabelled image in the first labelling pass. The outlier in the test error comes from a single correctly labelled but tricky example. We can see the model solves the task well, but still has noticeably sub-human performance. The lack of data-augmentation in the test set also means that it is much smaller than the training or validation sets, and it might be interesting to recompute these errors using data augmentation to improve the statistics.
+The outlier bin in the baseline errors comes from a single mislabelled image in the first labelling pass. The outlier in the test error comes from a single correctly labelled but tricky example. We can see the model solves the task well, but still has noticeably sub-human performance. The lack of data-augmentation in the test set also means that it is much smaller than the training or validation sets, and it would be good recompute these errors using data augmentation or a larger test set to improve the statistics.
 
 In terms of extensions of this work, I think it would be interesting to try larger models, more typical architectures (e.g. ResNet), and also fine-tuning of pre-trained networks. We have a much larger corpus of un-labelled images in the lab, so there might be interesting opportunities for transfer learning experiments there. 
 
