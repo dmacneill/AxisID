@@ -5,9 +5,9 @@ One of the most striking features of crystals is the tendency to cleave along sp
 <img src="figures/bn_with_lattice_crop.png" width=900>
 </p>
   
-*Microscope image of a 2D boron nitride crystal with the crystal structure overlaid. The crystal tends to cleave along high-symmetry directions of the crystal lattice, which occur every 30 degrees.*
+*Microscope image of a 2D boron nitride crystal with the crystal structure overlaid. The crystal tends to cleave along high-symmetry directions of the crystal lattice, which occur every 30°.*
 
-It is common in research labs to use straight edges to estimate the crystallographic oritentation of a 2D crystal. Empirically, the accuracy of this technique is about 1 degree; experiments have come to require much higher (0.1 degree) angular precision so other methods are preferred. Nevertheless, I was curious to see if this technique can be automated. 
+It is common in research labs to use straight edges to estimate the crystallographic oritentation of a 2D crystal. Empirically, the accuracy of this technique is about 1°; experiments have come to require much higher (0.1°) angular precision so other methods are preferred. Nevertheless, I was curious to see if this technique can be automated. 
 
 It is tempting to automate this without machine learning, by using edge detectors to identify edges and then fitting the peaks in a histogram of edge angles. However, it takes intuition to pick the "straight edges," and there are difficult cases. Here is an example where there are some fairly straight edges that aren't aligned with the crystal axes:
 
@@ -15,7 +15,7 @@ It is tempting to automate this without machine learning, by using edge detector
 <img src="figures/hard_example.svg" width=900>
 </p>
 
-*Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30 degrees). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystallographic orientation is about 16.1 degrees.*
+*Left: Boron nitride crystal with some edges indicated. Right: histogram of the angles of indicated edges (moduluo 30°). The color of the bars correspond to the color of the edges in the left panel. The correct value of the crystallographic orientation is about 16.1°.*
 
 A human will be able to pick the straighter edges (shown in black) and correctly determine the crystallographic orientation. There are other factors that make automation difficult, such as inconsistent illumination, inconsistent contrast, and anomalous features like polymer residues or dirt. I decided to train convolutional neural nets (CNN) on labelled examples to see if they can solve the task. 
 
@@ -42,7 +42,7 @@ For each image in `image_dir` with filename *image*.tif or *image*.jpg there sho
 
 The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (see [StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`. If none are passed no scheduler is used.
 
-One final comment is that the predicted and ground-truth angles are only compared moduluo 30 degrees in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30 degrees from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
+One final comment is that the predicted and ground-truth angles are only compared moduluo 30° in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30° from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
 ### Results
 
@@ -54,7 +54,7 @@ I then chose 5 small CNN architectures somewhat randomly to get a feel for their
 <img src="figures/architectures.svg" width=800>
 </p>
 
-I trained the models for 2000 epochs using the [AdamW](https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html) optimizer with constant parameters `lr=3e-4`, `weight _decay=0.05` and `betas=(0.9, 0.99)`. The batch size was 64 or 128 depending on the model size (constrained by my GPU memory). I witheld 20% of the training set to use as the validation set. For data-augmentation, each sample was randomly rotated by 0, 90, 180, or 270 degrees and randomly flipped vertically or not, during both training and validation. The results of these initial training runs are plotted below:
+I trained the models for 2000 epochs using the [AdamW](https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html) optimizer with constant parameters `lr=3e-4`, `weight _decay=0.05` and `betas=(0.9, 0.99)`. The batch size was 64 or 128 depending on the model size (constrained by my GPU memory). I witheld 20% of the training set to use as the validation set. For data-augmentation, each sample was randomly rotated by 0°, 90°, 180°, or 270° and randomly flipped vertically or not, during both training and validation. The results of these initial training runs are plotted below:
 
 <p align ="center">
 <img src="figures/model_performance.svg" width=800>
@@ -66,7 +66,7 @@ Model 3 gives the best performance, despite having fewer parameters than Model 4
 <img src="figures/1clr_training.svg" width=1000>
 </p>
 
-Note that the maximum error is 15 degrees, and the RMS error from a random policy is therefore 8.67 degrees. I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. The differences between the two labellings are plotted as "Baseline Errors" below:
+Note that the maximum error is 15°, and the RMS error from a random policy is therefore 8.67°. I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. The differences between the two labellings are plotted as "Baseline Errors" below:
 
 <p align ="center">
 <img src="figures/test_set_errors.svg" width=800>
