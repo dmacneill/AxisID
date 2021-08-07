@@ -40,7 +40,7 @@ python test_model.py --image_dir images --annotation_dir annotations --weights_p
 
 For each image in `image_dir` with filename *image*.tif or *image*.jpg there should be a corresponding file in `annotation_dir` with filename *image*-edges.csv. The first line of *image*-edges.csv should contain the ground-truth crystallographic orientation for the image. 
 
-The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [torch.optim.lr_scheduler.StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params` (if none are passed no scheduler is used).
+The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (as described in the documentation for [StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params` (if none are passed no scheduler is used).
 
 One final comment is that the predicted and ground-truth angles are only compared moduluo 30 degrees in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30 degrees from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
@@ -53,6 +53,8 @@ I then chose 5 small CNN architectures somewhat randomly to get a feel for their
 <p align ="center">
 <img src="figures/architectures.svg" width=800>
 </p>
+
+I then trained them on the dataset for 2000 epochs using the [AdamW](https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html) optimizer with constant parameters `lr=3e-4`, `weight _decay=0.05` and `betas=(0.9, 0.99)`. The batch size was 64 or 128 depending on the model size (constrained by my GPU memory).
 
 ### References
 
