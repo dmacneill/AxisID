@@ -63,7 +63,7 @@ I trained the models for 2000 epochs using the [AdamW](https://pytorch.org/docs/
 Model 3 gives the best performance, despite having a lower parameter count than Model 4 and Model 5. I decided to retrain Model 3 with a step-decay and 1cycle learning rate policy. The best results were obtained with the 1cycle policy: 
 
 <p align ="center">
-<img src="figures/1clr_training.svg" width=800>
+<img src="figures/1clr_training.svg" width=1000>
 </p>
 
 ### References
