@@ -66,6 +66,8 @@ Model 3 gives the best performance, despite having a lower parameter count than 
 <img src="figures/1clr_training.svg" width=1000>
 </p>
 
+I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. My "errors" in this labelling are plotted as "Baseline Errors" below:
+
 ### References
 
 <a id="1">[1]</a> Y. Gao *et al.,* "Distinctive in-Plane Cleavage Behaviors of Two-Dimensional Layered Materials", *ACS Nano*, 10(9):8980-8 (2016)
