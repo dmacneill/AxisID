@@ -78,8 +78,8 @@ def test_model(model, params):
     
     """Use the model to predict axis angles for all images in a directory. The images
     are cropped and re-sized to the model's input size before prediction. The path to
-    a directory of angle annotations for the images can optionally be passed, in which
-    case the loss between predicted and ground-truth values is computed.
+    a directory of annotations for the images should also be passed in the params
+    dict. The loss between predicted and ground-truth values is computed.
     Args:
         model: nn.Module
         params: dict of params
