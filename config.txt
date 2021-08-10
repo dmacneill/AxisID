@@ -1,8 +1,8 @@
 --cuda
 --weight_decay
-0.075
+0.05
 --epochs
-2000
+1500
 --lr
 3e-4
 --momentum
@@ -20,5 +20,5 @@ angles.csv
 --batch_size
 64
 --scheduler_params
-1500
+1200
 0.1
