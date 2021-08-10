@@ -49,7 +49,7 @@ class FourfoldRotation():
     def __call__(self, sample):
         
         X, y = sample
-        k = random.randint(0,3)
+        k = int(torch.randint(0,4,(1,)))
         
         theta_r = (f.k*k*90)%360
         c = np.cos(np.pi*theta_r/180)
@@ -67,7 +67,7 @@ class VerticalFlip():
     def __call__(self, sample):
         
         X, y = sample 
-        k = random.randint(0,1)
+        k = int(torch.randint(0,2,(1,)))
         
         if k == 1:
             return (torch.flip(X, dims = [-2]), y*torch.tensor([1.0,-1.0]))
@@ -140,7 +140,7 @@ def load_images(idx, basenames, angles, counts, image_dir):
      
     return X, y
    
-def create_datasets(angles_path, image_dir, f_split, batch_size):
+def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers):
     
     """Creates DataSets and DataLoaders for the training and validation sets
     """
@@ -155,11 +155,13 @@ def create_datasets(angles_path, image_dir, f_split, batch_size):
     print('Loading training data')
     X, y = load_images(idx[0:N_train], basenames, angles, counts, image_dir)   
     train_dataset = AngleDataset(X,y, transform = data_transforms)
-    train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle = True)
+    train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, 
+                              shuffle = True, pin_memory = True, num_workers = num_workers)
     print('Loading validation data')
     X, y = load_images(idx[N_train:], basenames, angles, counts, image_dir)
     val_dataset = AngleDataset(X,y, transform = data_transforms)
-    val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle = True)
+    val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, 
+                            shuffle = True, pin_memory = True)
     val_names = [basenames[i] for i in idx[N_train:]]
     with open('validation_examples.txt', 'w+') as val_names_file:
         for item in val_names:
@@ -327,6 +329,9 @@ def main():
     parser.add_argument('--batch_size', type = int, default = 64, 
                         help = 'batch size')
     
+    parser.add_argument('--num_workers', type = int, default = 0, 
+                        help = 'Number of workers for DataLoader')
+    
     parser.add_argument('--scheduler_params', type = float, nargs = '*', default = None,
                         help = 'parameters passed to learning rate scheduler, if None no scheduler is used')
     
@@ -344,7 +349,8 @@ def main():
     #torch.use_deterministic_algorithms(True)
     
     train_dataset, train_loader, val_dataset, val_loader = create_datasets(args.angles_path, 
-                                                                           args.image_dir, args.f_split, args.batch_size)
+                                                                           args.image_dir, args.f_split, 
+                                                                           args.batch_size, args.num_workers)
     
     params = dict()
     params['Device'] = torch.device('cuda' if torch.cuda.is_available() and args.cuda else 'cpu')
