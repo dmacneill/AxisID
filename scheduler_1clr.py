@@ -44,8 +44,7 @@ class Scheduler():
         
         self.optimizer.param_groups[0]['lr'] = self.lr
         self.optimizer.param_groups[0]['betas'] = (self.init_beta1, self.beta2)
-        
-        
+            
     def step(self):
         
         """Increment the optimizer parameters. Called at the end of each epoch during training.
