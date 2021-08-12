@@ -277,7 +277,10 @@ def train(model, optimizer, scheduler, train_loader, val_loader, params):
                 print('Validation loss on epoch '+str(epoch+1)+': '+ '{:.2f}'.format(epoch_val_loss))
         
             if (epoch+1)%save_frequency == 0:
+                results = np.column_stack((np.arange(1,epoch+2), np.array(losses), np.array(val_losses)))
+                np.savetxt(output_dir+'/losses.csv', results, delimiter = ',')
                 torch.save(model.state_dict(), output_dir+'/'+'model_weights-'+str(epoch+1)+'.pth')
+        
         if scheduler is not None:
             scheduler.step()
         
