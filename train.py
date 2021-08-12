@@ -12,7 +12,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from model import Network
-from scheduler import Scheduler
+import schedulers
 import shared_functions as f
 
 class AngleDataset(Dataset):
@@ -37,7 +37,7 @@ class AngleDataset(Dataset):
         sample = self.transform((self.X[idx], self.y[idx]))
                                        
         return sample
-    
+
 class FourfoldRotation():
     
     """Rotates image by 0, 90, 180 or 270 degrees, with equal probability. Depending
@@ -305,6 +305,9 @@ def main():
     parser.add_argument('--optimizer', default = 'Adam', choices = ['Adam', 'SGD'],
                         help = 'optimizer type')
     
+    parser.add_argument('--scheduler', default = None, choices = ['OneCycle', 'StepDecay'],
+                        help = 'scheduler type')
+    
     parser.add_argument('--epochs', type = int, default = 2000, 
                         help = 'training epochs')
     
@@ -336,7 +339,7 @@ def main():
                         help = 'Number of workers for DataLoader')
     
     parser.add_argument('--scheduler_params', type = float, nargs = '*', default = None,
-                        help = 'parameters passed to learning rate scheduler, if None no scheduler is used')
+                        help = 'parameters passed to learning rate scheduler')
     
     parser.add_argument('--seed', type = int, default = 2319,
                         help = 'seed for random number generators')
@@ -373,8 +376,11 @@ def main():
     elif args.optimizer == 'SGD':
         optimizer = torch.optim.SGD(model.parameters(), lr = args.lr, momentum = args.momentum, weight_decay = args.weight_decay)
     
-    if args.scheduler_params is not None:
-        scheduler = Scheduler(optimizer, args.scheduler_params)
+    if args.scheduler == 'OneCycle':
+        scheduler = schedulers.OneCycle(optimizer, args.scheduler_params)
+        print(optimizer.param_groups[0]['lr'])
+    elif args.scheduler == 'StepDecay':
+        scheduler = schedulers.StepDecay(optimizer, args.scheduler_params)
     else:
         scheduler = None
     
