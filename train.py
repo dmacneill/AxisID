@@ -94,7 +94,7 @@ def read_angles_file(angles_path):
     
     return basenames, angles, counts
 
-def load_images(idx, basenames, angles, counts, image_dir):
+def load_images(idx, basenames, angles, counts, image_dir, target_size):
     
     """Loads training images and prepares the tensors required for an AngleDataset
     Args:
@@ -115,6 +115,9 @@ def load_images(idx, basenames, angles, counts, image_dir):
     X = []
     y = []
     
+    resize = transforms.Resize(target_size, interpolation = transforms.functional.InterpolationMode.BILINEAR)
+    crop = transforms.CenterCrop(target_size)
+    
     for i in idx:
         
         basename = basenames[i]
@@ -125,6 +128,7 @@ def load_images(idx, basenames, angles, counts, image_dir):
         for j in range(count):#Loop over all versions of an image generated through pre-computed data augmentation
             try:
                 image = Image.open(image_dir+'/'+basename+'-'+str(j)+'.'+extension)
+                image = resize(crop(image))
                 image = np.array(image)
                 image = image.transpose((2,0,1))
                 X.append(image)
@@ -140,7 +144,7 @@ def load_images(idx, basenames, angles, counts, image_dir):
      
     return X, y
    
-def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers):
+def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers, target_size):
     
     """Creates DataSets and DataLoaders for the training and validation sets
     """
@@ -153,12 +157,12 @@ def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers):
     data_transforms = transforms.Compose([FourfoldRotation(), VerticalFlip()]) 
     
     print('Loading training data')
-    X, y = load_images(idx[0:N_train], basenames, angles, counts, image_dir)   
+    X, y = load_images(idx[0:N_train], basenames, angles, counts, image_dir, target_size)   
     train_dataset = AngleDataset(X,y, transform = data_transforms)
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, 
                               shuffle = True, pin_memory = True, num_workers = num_workers)
     print('Loading validation data')
-    X, y = load_images(idx[N_train:], basenames, angles, counts, image_dir)
+    X, y = load_images(idx[N_train:], basenames, angles, counts, image_dir, target_size)
     val_dataset = AngleDataset(X,y, transform = data_transforms)
     val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, 
                             shuffle = True, pin_memory = True)
@@ -338,6 +342,9 @@ def main():
     parser.add_argument('--num_workers', type = int, default = 0, 
                         help = 'Number of workers for DataLoader')
     
+    parser.add_argument('--target_size', type = int, default = 256,
+                        help = 'size of images input to model')
+        
     parser.add_argument('--scheduler_params', type = float, nargs = '*', default = None,
                         help = 'parameters passed to learning rate scheduler')
     
@@ -356,7 +363,7 @@ def main():
     
     train_dataset, train_loader, val_dataset, val_loader = create_datasets(args.angles_path, 
                                                                            args.image_dir, args.f_split, 
-                                                                           args.batch_size, args.num_workers)
+                                                                           args.batch_size, args.num_workers, args.target_size)
     
     params = dict()
     params['Device'] = torch.device('cuda' if torch.cuda.is_available() and args.cuda else 'cpu')
@@ -378,7 +385,6 @@ def main():
     
     if args.scheduler == 'OneCycle':
         scheduler = schedulers.OneCycle(optimizer, args.scheduler_params)
-        print(optimizer.param_groups[0]['lr'])
     elif args.scheduler == 'StepDecay':
         scheduler = schedulers.StepDecay(optimizer, args.scheduler_params)
     else:
