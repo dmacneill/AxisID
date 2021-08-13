@@ -24,7 +24,7 @@ Python 3.8.10, Pillow 7.2.0, NumPy 1.19.1, Matplotlib 3.3.4, PyTorch 1.8.1
 
 ### Usage
 
-This repository contains code necessary to train CNNs on the axis orientation task. The main script is ```train.py``` which can be run from the command line using:
+This repository contains code necessary to train CNNs on the axis orientation task. The main script is `train.py` which can be run from the command line using:
 
 ```
 python train.py --cuda --image_dir images --angles_path angles.csv
@@ -32,7 +32,7 @@ python train.py --cuda --image_dir images --angles_path angles.csv
 
 `image_dir` is the path to the training images, assumed to be JPEG or TIFF images, and `angles_path` is the path to the labels file with rows of labels in the format: *basename, axis_angle, count*. This format allows pre-computed data augmentation with the following convention: for each *basename* there should be *count* images in `image_dir` with names *basename-n*.jpg or *basename-n*.tif, where *n* ranges from 0 to *count*-1. To see the full list of arguments, call `python train.py -h`. Arguments can be passed via file using `python train.py @config.txt`.
 
-The other script is ```test_model.py``` which allows easy testing on the test set, or re-evaluation on the training set. It is run from the command line using:
+The other script is `test_model.py` which allows easy testing on the test set, or re-evaluation on the training set. It is run from the command line using:
 
 ```
 python test_model.py --image_dir images --annotation_dir annotations --weights_path path_to_model
@@ -40,7 +40,7 @@ python test_model.py --image_dir images --annotation_dir annotations --weights_p
 
 For each image in `image_dir` with filename *image*.tif or *image*.jpg there should be a corresponding file in `annotation_dir` with filename *image*-edges.csv. The first line of *image*-edges.csv should contain the ground-truth crystallographic orientation for the image. 
 
-The other two important modules are `model.py`, which defines the model, and `scheduler.py` which defines the learning rate scheduler. The default is a step decay schedule (see [StepLR](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html)). The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`. If none are passed no scheduler is used.
+The other two important modules are `model.py`, which defines the model, and `schedulers.py` which defines the learning rate schedulers. The default is to use a constant learning rate, but [step-decay](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html) or [one-cycle](https://www.fast.ai/2018/07/02/adam-weight-decay/) polices can be used with the command line arguments `--scheduler StepDecay` or `--scheduler OneCycle` respectively. The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`.
 
 One final comment is that the predicted and ground-truth angles are only compared moduluo 30° in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30° from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
@@ -60,7 +60,7 @@ I trained the models for 2000 epochs using the [AdamW](https://pytorch.org/docs/
 <img src="figures/model_performance.svg" width=800>
 </p>
 
-Model 3 gives the best performance, despite having fewer parameters than Model 4 and Model 5. I decided to retrain Model 3 with both step-decay and [1cycle](https://www.fast.ai/2018/07/02/adam-weight-decay/) learning rate policies. The best results were obtained with the 1cycle policy: 
+Model 3 gives the best performance, despite having fewer parameters than Model 4 and Model 5. I decided to retrain Model 3 with both step-decay and one-cycle learning rate policies. The best results were obtained with the one-cycle policy: 
 
 <p align ="center">
 <img src="figures/1clr_training.svg" width=1000>
