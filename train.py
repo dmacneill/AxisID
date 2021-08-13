@@ -22,9 +22,10 @@ class AngleDataset(Dataset):
     Attributes:
         X: torch.tensor of images with shape (num_samples, num_channels, height, width)
         y: torch.tensor of angle labels in vector format, with shape (num_samples, 2)
+        transform: callable object for data augmentation, takes tuple argument
     """
     
-    def __init__(self, X, y, transform = None):
+    def __init__(self, X, y, transform):
         self.X = X
         self.y = y
         self.transform = transform
@@ -33,10 +34,7 @@ class AngleDataset(Dataset):
         return len(self.y)
     
     def __getitem__(self, idx):
-        
-        sample = self.transform((self.X[idx], self.y[idx]))
-                                       
-        return sample
+        return self.transform((self.X[idx], self.y[idx]))
 
 class FourfoldRotation():
     
@@ -74,6 +72,35 @@ class VerticalFlip():
         else:
             return sample
 
+class TupleTransform():
+    
+    """Wraps transform taking and returning a data tensor to create a transform taking
+    and returning a tuple (X, y) of a data tensor and its label.
+    Attributes:
+        transform: callable that takes and returns a torch.tensor
+    """
+    
+    def __init__(self, transform):
+        self.transform = transform
+    
+    def __call__(self, sample):
+        return (self.transform(sample[0]), sample[1])
+        
+class AddNoise():
+    
+    """Adds random noise to an image with a given amplitude.
+    Attributes:
+        amplitude: int; the noise is uniformly distributed integers in [-amplitude, amplitude]
+    """
+    
+    def __init__(self, amplitude=1):
+        self.amplitude = amplitude
+        
+    def __call__(self, X):
+        X = X + torch.randint(-self.amplitude, self.amplitude+1, X.size())
+        X = torch.clamp(X,0,255)
+        return X.type(torch.uint8)
+    
 def read_angles_file(angles_path):
     
     """Reads the angles file containing the ground-truth angle assignments. This file contains
@@ -144,7 +171,7 @@ def load_images(idx, basenames, angles, counts, image_dir, target_size):
      
     return X, y
    
-def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers, target_size):
+def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers, target_size, full_augmentation):
     
     """Creates DataSets and DataLoaders for the training and validation sets
     """
@@ -154,16 +181,29 @@ def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers, ta
     N_samples = len(basenames)
     idx = random.sample(range(N_samples), N_samples)
     N_train = np.floor(f_split*N_samples).astype(dtype = 'int')
-    data_transforms = transforms.Compose([FourfoldRotation(), VerticalFlip()]) 
+    
+    if full_augmentation:
+        
+        random_jitter = transforms.RandomApply([transforms.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25, hue=0.25)], p = 0.2)
+        random_crop = transforms.RandomApply([transforms.RandomResizedCrop(target_size, ratio = (1.0, 1.0), scale = (0.75,1.0))], p = 0.5)
+        random_blur = transforms.RandomApply([transforms.GaussianBlur(5)], p = 0.2)
+        random_noise = transforms.RandomApply([AddNoise(10)], p = 0.2)
+        random_erasing = transforms.RandomErasing(p=0.2, scale=(0.01, 0.05), ratio=(0.333, 3.0))
+        
+        tensor_transforms = transforms.Compose([random_jitter, random_erasing, random_blur, random_noise, random_crop])
+        data_transform = transforms.Compose([FourfoldRotation(), VerticalFlip(), TupleTransform(tensor_transforms)])
+        
+    else:
+         data_transform = transforms.Compose([FourfoldRotation(), VerticalFlip()])
     
     print('Loading training data')
     X, y = load_images(idx[0:N_train], basenames, angles, counts, image_dir, target_size)   
-    train_dataset = AngleDataset(X,y, transform = data_transforms)
+    train_dataset = AngleDataset(X,y, transform = data_transform)
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, 
                               shuffle = True, pin_memory = True, num_workers = num_workers)
     print('Loading validation data')
     X, y = load_images(idx[N_train:], basenames, angles, counts, image_dir, target_size)
-    val_dataset = AngleDataset(X,y, transform = data_transforms)
+    val_dataset = AngleDataset(X,y, transform = data_transform)
     val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, 
                             shuffle = True, pin_memory = True)
     val_names = [basenames[i] for i in idx[N_train:]]
@@ -340,13 +380,16 @@ def main():
                         help = 'batch size')
     
     parser.add_argument('--num_workers', type = int, default = 0, 
-                        help = 'Number of workers for DataLoader')
+                        help = 'number of workers for DataLoader')
     
     parser.add_argument('--target_size', type = int, default = 256,
                         help = 'size of images input to model')
         
     parser.add_argument('--scheduler_params', type = float, nargs = '*', default = None,
                         help = 'parameters passed to learning rate scheduler')
+    
+    parser.add_argument('--full_augmentation', action = 'store_true',
+                        help = 'enable aggresive data augmentation')
     
     parser.add_argument('--seed', type = int, default = 2319,
                         help = 'seed for random number generators')
@@ -363,7 +406,8 @@ def main():
     
     train_dataset, train_loader, val_dataset, val_loader = create_datasets(args.angles_path, 
                                                                            args.image_dir, args.f_split, 
-                                                                           args.batch_size, args.num_workers, args.target_size)
+                                                                           args.batch_size, args.num_workers, 
+                                                                           args.target_size, args.full_augmentation)
     
     params = dict()
     params['Device'] = torch.device('cuda' if torch.cuda.is_available() and args.cuda else 'cpu')

@@ -30,7 +30,7 @@ def crop_and_scale(image, target_size):
     right = size[0] if same_axis == 0 else left+size[1]
     
     cropped_image = image.crop((left, top, right, bottom))
-    scaled_image = cropped_image.resize((target_size, target_size), Image.ANTIALIAS)
+    scaled_image = cropped_image.resize((target_size, target_size), resample = Image.BILINEAR)
     
     return scaled_image
 
@@ -78,8 +78,8 @@ def test_model(model, params):
     
     """Use the model to predict axis angles for all images in a directory. The images
     are cropped and re-sized to the model's input size before prediction. The path to
-    a directory of annotations for the images should also be passed in the params
-    dict. The loss between predicted and ground-truth values is computed.
+    a directory of angle annotations for the images should also be passed in the params
+    dicet, and the loss between predicted and ground-truth values is computed.
     Args:
         model: nn.Module
         params: dict of params
