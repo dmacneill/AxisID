@@ -15,6 +15,7 @@ from model import Network
 import schedulers
 import shared_functions as f
 
+
 class AngleDataset(Dataset):
     
     """torch.utils.data.Dataset subclass for holding image data and 
@@ -36,6 +37,23 @@ class AngleDataset(Dataset):
     def __getitem__(self, idx):
         return self.transform((self.X[idx], self.y[idx]))
 
+def rotate_label(y, theta):
+    
+    """Rotates the label to account for a rotation of an image by theta
+    Args:
+        y: torch.tensor; the label
+        theta: image rotation angle
+    Returns:
+        rotated label
+    """
+    
+    theta_y = (f.k*theta)%360
+    c = np.cos(np.pi*theta_y/180)
+    s = np.sin(np.pi*theta_y/180)
+    y = torch.matmul(y, torch.tensor([[c,s],[-s,c]], dtype = torch.float))
+    
+    return y
+    
 class FourfoldRotation():
     
     """Rotates image by 0, 90, 180 or 270 degrees, with equal probability. Depending
@@ -48,14 +66,35 @@ class FourfoldRotation():
         
         X, y = sample
         k = int(torch.randint(0,4,(1,)))
-        
-        theta_r = (f.k*k*90)%360
-        c = np.cos(np.pi*theta_r/180)
-        s = np.sin(np.pi*theta_r/180)
-        y = torch.matmul(y, torch.tensor([[c,s],[-s,c]], dtype = torch.float))
+        theta = k*90
+        y = rotate_label(y, theta)
         
         return (torch.rot90(X, k = k, dims = [-2,-1]), y)
+
+class RandomRotation():
     
+    """Applies a random rotation to the image and label.
+    Attributes:
+        rotation_range: maximum rotation
+    """
+    
+    def __init__(self, rotation_range):
+        
+        self.rotation_range = rotation_range
+    
+    def __call__(self, sample):
+        
+        X, y = sample
+        
+        theta = self.rotation_range*(2*torch.rand(1)-1)
+        theta = float(theta.numpy()[0])
+        y = rotate_label(y, theta)
+        
+        X = transforms.functional.rotate(X, theta, interpolation = transforms.functional.InterpolationMode.BILINEAR)
+        
+        return (X, y)
+        
+   
 class VerticalFlip():
     
     """Flips the image vertically or doesn't, with equal probability. For any
@@ -189,9 +228,10 @@ def create_datasets(angles_path, image_dir, f_split, batch_size, num_workers, ta
         random_blur = transforms.RandomApply([transforms.GaussianBlur(5)], p = 0.2)
         random_noise = transforms.RandomApply([AddNoise(10)], p = 0.2)
         random_erasing = transforms.RandomErasing(p=0.2, scale=(0.01, 0.05), ratio=(0.333, 3.0))
+        random_rotation = transforms.RandomApply([RandomRotation(30.0)], p = 0.2)
         
         tensor_transforms = transforms.Compose([random_jitter, random_erasing, random_blur, random_noise, random_crop])
-        data_transform = transforms.Compose([FourfoldRotation(), VerticalFlip(), TupleTransform(tensor_transforms)])
+        data_transform = transforms.Compose([FourfoldRotation(), VerticalFlip(), TupleTransform(tensor_transforms), random_rotation])
         
     else:
          data_transform = transforms.Compose([FourfoldRotation(), VerticalFlip()])
