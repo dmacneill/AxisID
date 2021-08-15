@@ -3,10 +3,6 @@
 0.075
 --epochs
 1801
---lr
-3e-4
---momentum
-0.9
 --output_frequency
 10
 --save_frequency
