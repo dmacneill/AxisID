@@ -145,7 +145,7 @@ def main():
     parser.add_argument('--annotation_dir', type = str, default = 'annotations',
                         help = 'annotation file directory')
     
-    parser.add_argument('--weights_path', type = str, default = 'output/model_weights-final.pth',
+    parser.add_argument('--weights_path', type = str, default = 'model_weights.pth',
                         help = 'path to model weights')
     
     parser.add_argument('--target_size', type = int, default = 256,
