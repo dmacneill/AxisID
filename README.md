@@ -76,6 +76,10 @@ The outlier bin in the baseline errors comes from a single mislabelled image in 
 
 Finally, I trained a modified version of PyTorch's built-in ResNet18 on the axis-identifaction task. I replaced the last two blocks with identity operations resulting in a network with nine convolutional layers, one fully-connected layer, and 683330 parameters total. To obtain better performance than Model 3, it was necessary to include additional data-augmentation operations (activated by passing the `--full_augmentation` flag to `train.py`). The results are shown below:
 
+<p align ="center">
+<img src="figures/resnet_training.svg" width=1000>
+</p>
+
 ### References
 
 <a id="1">[1]</a> Y. Gao *et al.,* "Distinctive in-Plane Cleavage Behaviors of Two-Dimensional Layered Materials", *ACS Nano*, 10(9):8980-8 (2016)
