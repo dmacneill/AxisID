@@ -66,7 +66,7 @@ Model 3 gives the best performance, despite having fewer parameters than Model 4
 <img src="figures/1clr_training.svg" width=1000>
 </p>
 
-Note that the maximum error is 15°, and the RMS error from a random policy is therefore 8.67°. I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. The differences between the two labellings are plotted as "Baseline Errors" below:
+Note that the maximum error is 15°, and the MAE error from a random policy is therefore 7.5°. I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. The differences between the two labellings are plotted as "Baseline Errors" below:
 
 <p align ="center">
 <img src="figures/test_set_errors.svg" width=800>
@@ -74,7 +74,7 @@ Note that the maximum error is 15°, and the RMS error from a random policy is t
 
 The outlier bin in the baseline errors comes from a single mislabelled image in the first labelling pass. The outlier in the test error comes from a single correctly labelled but tricky example. We can see the model solves the task well, but is still worse than human performance. The lack of data-augmentation in the test set also means that it is much smaller than the training or validation sets, and it would be good recompute these errors using data augmentation or a larger test set to improve the statistics.
 
-In terms of extensions of this work, I think it would be interesting to try larger models, more typical architectures (e.g. ResNet), and also fine-tuning of pre-trained networks. We have a much larger corpus of un-labelled images in the lab, so there might be interesting opportunities for transfer learning experiments there. 
+Finally, I trained a modified version of PyTorch's built-in ResNet18 on the axis-identifaction task. I replaced the last two blocks with identity operations resulting in a network with nine convolutional layers, one fully-connected layer, and 683330 parameters total. To obtain better performance than Model 3, it was necessary to include additional data-augmentation operations (activated by passing the `--full_augmentation` flag to `train.py`). The results are shown below:
 
 ### References
 
