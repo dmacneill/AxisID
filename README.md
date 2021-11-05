@@ -1,5 +1,5 @@
 # AxisID
-A striking features of crystals is the tendency to cleave along specific directions with respect to the underlying atomic lattice. This is not just true for typical 3D crystals, but also 2D crystals currently studied in physics research [[1]](#1):
+A striking features of crystals is the tendency to cleave along specific directions with respect to the underlying atomic lattice. This is true even for the two-dimensional crystals currently studied in physics research [[1]](#1):
 
 <p align = "center">
 <img src="figures/bn_with_lattice_crop.png" width=900>
