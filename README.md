@@ -22,7 +22,7 @@ Python 3.8.10, Pillow 7.2.0, NumPy 1.19.1, Matplotlib 3.3.4, PyTorch 1.8.1
 
 ### Usage
 
-This repository contains code necessary to train CNNs on the axis orientation task. The main script is `train.py` which can be run from the command line using:
+This repository contains code necessary to train CNNs on the axis orientation task. The main script is `train.py` which can be run from the command line:
 
 ```
 python train.py --cuda --image_dir images --angles_path angles.csv
@@ -30,7 +30,7 @@ python train.py --cuda --image_dir images --angles_path angles.csv
 
 `image_dir` is the path to the training images, and `angles_path` is the path to the labels file with rows of labels in the format: filename, axis_angle, *N*. This format allows pre-computed data augmentation with the following convention: for each filename there should be *N* images in `image_dir` with names filename-*n*.jpg or filename-*n*.tif, where *n* ranges from 0 to *N*-1. To see the full list of arguments, call `python train.py -h`. Arguments can be passed via file using `python train.py @config.txt`.
 
-The other script is `test_model.py` which allows easy testing on the test set, or re-evaluation on the training set. It is run from the command line using:
+The other script is `test_model.py` which allows easy testing on the test set, or re-evaluation on the training set. It is run from the command line:
 
 ```
 python test_model.py --image_dir images --annotation_dir annotations --weights_path path_to_model
