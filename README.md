@@ -2,7 +2,7 @@
 A striking features of crystals is the tendency to cleave along specific directions with respect to the underlying atomic lattice. This is true even for the two-dimensional crystals currently studied in physics research [[1]](#1):
 
 <p align = "center">
-<img src="figures/bn_with_lattice_crop.png" width=900>
+<img src="figures/bn_with_lattice_crop.jpg" width=900>
 </p>
   
 *Microscope image of a 2D boron nitride crystal with the crystal structure overlaid. The crystal tends to cleave along high-symmetry directions of the crystal lattice, which occur every 30°.*
