@@ -72,7 +72,7 @@ Note that the maximum error is 15°, and the MAE error from a random policy is 7
 <img src="figures/test_set_errors.svg" width=800>
 </p>
 
-The outlier bin in the baseline errors comes from a single mislabelled image in the first labelling pass. The outlier in the test error comes from a single correctly labelled but tricky example. We can see the model solves the task well, but is still worse than human performance. The lack of data-augmentation in the test set also means that it is much smaller than the training or validation sets, and it would be good recompute these errors using data augmentation or a larger test set to improve the statistics.
+We can see the model solves the task well, but is still worse than human performance. The lack of data-augmentation in the test set also means that it is much smaller than the training or validation sets, and it would be good recompute these errors using data augmentation or a larger test set to improve the statistics.
 
 Finally, I trained a modified version of PyTorch's built-in ResNet18 on the axis-identifaction task. I replaced the last two blocks with identity operations resulting in a network with nine convolutional layers, one fully-connected layer, and 683330 parameters total. To obtain better performance than Model 3, it was necessary to include additional data-augmentation operations (activated by passing the `--full_augmentation` flag to `train.py`). The results are shown below:
 
