@@ -66,7 +66,7 @@ Model 3 gives the best performance, despite having fewer parameters than Model 4
 <img src="figures/1clr_training.svg" width=1000>
 </p>
 
-Note that the maximum error is 15°, and the MAE error from a random policy is therefore 7.5°. I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. The differences between the two labellings are plotted as "Baseline Errors" below:
+Note that the maximum error is 15°, and the MAE error from a random policy is 7.5°. I also checked the performance of this model on the test set. For comparison, I labeled the test set twice, and used the second pass as ground truth. The differences between the two labellings are plotted as "Baseline Errors" below:
 
 <p align ="center">
 <img src="figures/test_set_errors.svg" width=800>
