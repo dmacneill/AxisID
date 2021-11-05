@@ -38,9 +38,9 @@ python test_model.py --image_dir images --annotation_dir annotations --weights_p
 
 For each image in `image_dir` with filename filename.tif or filename.jpg there should be a corresponding file in `annotation_dir` with filename filename-edges.csv. The first line of filename-edges.csv should contain the ground-truth crystallographic orientation for the image. 
 
-The other two important modules are `model.py`, which defines the model, and `schedulers.py` which defines the learning rate schedulers. The default is to use a constant learning rate, but [step-decay](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html) or [one-cycle](https://www.fast.ai/2018/07/02/adam-weight-decay/) polices can be used with the command line arguments `--scheduler StepDecay` or `--scheduler OneCycle` respectively. The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`.
+The other two important modules are `model.py`, which defines the model, and `schedulers.py` which defines the learning rate schedulers. The implemented schedulers are constant learning rate, [step-decay](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html), and [one-cycle](https://www.fast.ai/2018/07/02/adam-weight-decay/).
 
-One final comment is that the predicted and ground-truth angles are only compared moduluo 30° in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30° from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
+The predicted and ground-truth angles are only compared moduluo 30° in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30° from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
 
 ### Results
 
