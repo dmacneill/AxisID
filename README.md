@@ -72,7 +72,7 @@ Note that the maximum error is 15°, and the MAE error from a random policy is 7
 
 We can see the model is still worse than human performance. The lack of data-augmentation in the test set means that it is much smaller than the training or validation sets, and the outlier bin in both cases comes from a single example (not the same example for both). It would be good recompute these errors using data augmentation or a larger test set to improve the statistics.
 
-Finally, I trained a modified version of PyTorch's built-in ResNet18 on the axis-identifaction task. I replaced the last two blocks with identity operations resulting in a network with nine convolutional layers, one fully-connected layer, and 683330 parameters total. To obtain better performance than Model 3, it was necessary to include additional data-augmentation operations (activated by passing the `--full_augmentation` flag to `train.py`). The results are shown below:
+Finally, I trained a modified version of PyTorch's built-in ResNet-18 on the axis-identifaction task. I replaced the last two blocks with identity operations resulting in a network with nine convolutional layers, one fully-connected layer, and 683330 parameters total. To obtain better performance than Model 3, it was necessary to include additional data-augmentation operations (activated by passing the `--full_augmentation` flag to `train.py`). The results are shown below:
 
 <p align ="center">
 <img src="figures/resnet_training.svg" width=1000>
