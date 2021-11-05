@@ -7,7 +7,7 @@ One of the most striking features of crystals is the tendency to cleave along sp
   
 *Microscope image of a 2D boron nitride crystal with the crystal structure overlaid. The crystal tends to cleave along high-symmetry directions of the crystal lattice, which occur every 30°.*
 
-It is common in research labs to use straight edges to estimate the crystallographic oritentation of a 2D crystal. Empirically, the accuracy of this technique is about 1°. Many experiments today require much higher precision (0.1°) and so use other techniques, but an on-the-fly optical detection algorithm with 1° accuracy is still useful. 
+It is common in research labs to use straight edges to estimate the crystallographic oritentation of a 2D crystal. Empirically, the accuracy of this technique is about 1°.
 
 We could try to automate this without machine learning, by using edge detectors to identify edges and then fitting the peaks in a histogram of edge angles. However, it takes intuition to pick the "straight edges," and there are difficult cases. Here is an example where there are some fairly straight edges that aren't aligned with the crystal axes:
 
