@@ -38,7 +38,7 @@ The other script is `test_model.py` which allows easy testing on the test set, o
 python test_model.py --image_dir images --annotation_dir annotations --weights_path path_to_model
 ```
 
-For each image in `image_dir` with filename *image*.tif or *image*.jpg there should be a corresponding file in `annotation_dir` with filename *image*-edges.csv. The first line of *image*-edges.csv should contain the ground-truth crystallographic orientation for the image. 
+For each image in `image_dir` with filename filename.tif or filename.jpg there should be a corresponding file in `annotation_dir` with filename filename-edges.csv. The first line of filename-edges.csv should contain the ground-truth crystallographic orientation for the image. 
 
 The other two important modules are `model.py`, which defines the model, and `schedulers.py` which defines the learning rate schedulers. The default is to use a constant learning rate, but [step-decay](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html) or [one-cycle](https://www.fast.ai/2018/07/02/adam-weight-decay/) polices can be used with the command line arguments `--scheduler StepDecay` or `--scheduler OneCycle` respectively. The parameters of the scheduler should be passed to `train.py` using`--scheduler_params`.
 
