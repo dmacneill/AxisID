@@ -30,14 +30,6 @@ python train.py --cuda --image_dir images --angles_path angles.csv
 
 `image_dir` is the path to the training images, and `angles_path` is the path to the labels file with rows of labels in the format: filename, axis_angle, *N*. This format allows pre-computed data augmentation with the following convention: for each filename there should be *N* images in `image_dir` with names filename-*n*.jpg or filename-*n*.tif, where *n* ranges from 0 to *N*-1. To see the full list of arguments, call `python train.py -h`. Arguments can be passed via file using `python train.py @config.txt`.
 
-The other script is `test_model.py` which allows easy testing on the test set, or re-evaluation on the training set. To run it:
-
-```
-python test_model.py --image_dir images --annotation_dir annotations --weights_path path_to_model
-```
-
-For each image in `image_dir` named filename.tif or filename.jpg there should be a corresponding file in `annotation_dir` with filename filename-edges.csv. The first line of filename-edges.csv should contain the ground-truth crystallographic orientation for the image. 
-
 The other two important modules are `model.py`, which defines the model, and `schedulers.py` which defines the learning rate schedulers. The implemented schedulers are constant learning rate, [step-decay](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html), and [one-cycle](https://www.fast.ai/2018/07/02/adam-weight-decay/).
 
 The predicted and ground-truth angles are only compared moduluo 30° in the loss function. This is because, for hexagonal boron nitride and graphene, the crystal axis orientation can only be determined moduluo 30° from microscope images. For other materials a different value might be necessary; to change the value change the `modulus` variable in `shared_functions.py`.
